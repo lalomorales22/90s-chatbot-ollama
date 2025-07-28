@@ -1,0 +1,806 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FFEAA7, #DDA0DD);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: 'Bangers', cursive;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.app-container {
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 300px;
+    background: rgba(0, 0, 0, 0.9);
+    border-right: 5px solid #FFD700;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 3px solid #FFD700;
+    background: linear-gradient(45deg, #FF6B35, #FF1493);
+}
+
+.sidebar-title {
+    font-family: 'Bungee', cursive;
+    font-size: 1.5rem;
+    color: #FFD700;
+    text-shadow: 2px 2px 0px #000000;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.new-chat-btn {
+    width: 100%;
+    font-family: 'Bangers', cursive;
+    font-size: 16px;
+    padding: 12px;
+    border: 3px solid #FFD700;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #32CD32, #00FFFF);
+    color: #000000;
+    cursor: pointer;
+    text-shadow: 1px 1px 0px #FFFFFF;
+    transition: all 0.3s ease;
+}
+
+.new-chat-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #FFD700;
+}
+
+.chat-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chat-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #666;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.chat-item:hover {
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #FFD700;
+    transform: translateX(5px);
+}
+
+.chat-item.active {
+    background: linear-gradient(45deg, #FFD700, #FF6B35);
+    border-color: #FFD700;
+    color: #000000;
+}
+
+.chat-item-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 0px #000000;
+}
+
+.chat-item.active .chat-item-name {
+    color: #000000;
+    text-shadow: 1px 1px 0px #FFFFFF;
+}
+
+.chat-item-time {
+    font-size: 11px;
+    color: #CCCCCC;
+    font-family: 'Arial', sans-serif;
+}
+
+.chat-item.active .chat-item-time {
+    color: #333333;
+}
+
+.chat-item-actions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: none;
+}
+
+.chat-item:hover .chat-item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.chat-action-btn {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #FFD700;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #FFD700;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.chat-action-btn:hover {
+    background: #FFD700;
+    color: #000000;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: linear-gradient(45deg, #FF6B35, #FF1493);
+    border-bottom: 5px solid #000000;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.current-chat-name {
+    font-family: 'Bungee', cursive;
+    font-size: 1.8rem;
+    color: #FFD700;
+    text-shadow: 2px 2px 0px #000000;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-sidebar {
+    font-family: 'Bangers', cursive;
+    font-size: 18px;
+    padding: 8px 12px;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #FFD700, #FF6B35);
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-sidebar:hover {
+    transform: rotate(180deg);
+}
+
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+
+.subtitle {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: #000000;
+    text-shadow: 2px 2px 0px #FFFFFF;
+}
+
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    border: 5px solid #000000;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 10px 10px 0px #000000;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Dark theme for chat */
+.chat-container.dark-theme {
+    background: rgba(20, 20, 20, 0.95);
+    border: 5px solid #FFD700;
+}
+
+.messages-area.dark-theme {
+    background: rgba(10, 10, 10, 0.9);
+    border: 3px dashed #FFD700;
+    color: #FFFFFF;
+}
+
+.dark-theme .message-time {
+    color: #CCCCCC;
+}
+
+.messages-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 3px dashed #000000;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    min-height: 0;
+}
+
+.message {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 15px;
+    position: relative;
+    animation: messageAppear 0.5s ease-in;
+}
+
+@keyframes messageAppear {
+    from { 
+        opacity: 0;
+        transform: scale(0.8) rotate(-2deg);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.user-message {
+    align-self: flex-end;
+    max-width: 70%;
+    margin-left: auto;
+    transform: rotate(1deg);
+}
+
+.ai-message {
+    align-self: flex-start;
+    max-width: 70%;
+    margin-right: auto;
+    transform: rotate(-1deg);
+}
+
+.message-content {
+    font-weight: bold;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #666;
+    text-align: right;
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    text-shadow: none;
+}
+
+.input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+.controls-area {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-selector label {
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    color: #000000;
+    text-shadow: 1px 1px 0px #FFFFFF;
+}
+
+#themeSelect {
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    padding: 8px 15px;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #32CD32, #00FFFF);
+    color: #000000;
+}
+
+.user-font-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.user-font-selector label {
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    color: #000000;
+    text-shadow: 1px 1px 0px #FFFFFF;
+}
+
+#userFontSelect {
+    font-family: 'Fredoka One', cursive;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #FFE66D, #FF6B35);
+    color: #000000;
+    min-width: 200px;
+    max-width: 250px;
+}
+
+.message-input-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#messageInput {
+    flex: 1;
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    padding: 15px;
+    border: 4px solid #000000;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #FFFFFF, #F0F8FF);
+    color: #000000;
+}
+
+#messageInput:focus {
+    outline: none;
+    box-shadow: 0 0 15px #FF6B35;
+    animation: inputGlow 1s infinite alternate;
+}
+
+@keyframes inputGlow {
+    from { box-shadow: 0 0 15px #FF6B35; }
+    to { box-shadow: 0 0 25px #FF1493; }
+}
+
+#sendButton {
+    font-family: 'Bungee', cursive;
+    font-size: 16px;
+    padding: 15px 25px;
+    border: 4px solid #000000;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #32CD32, #FFD700);
+    color: #000000;
+    cursor: pointer;
+    text-shadow: 1px 1px 0px #FFFFFF;
+    transition: all 0.3s ease;
+}
+
+#sendButton:hover {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 5px 5px 0px #000000;
+}
+
+#sendButton:active {
+    transform: scale(0.95);
+}
+
+/* User Font Styles */
+.user-style-1 {
+    font-family: 'Righteous', cursive;
+    font-size: 22px;
+    color: #DC143C;
+    text-shadow: 2px 2px 0px #FFD700, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #DC143C, #FFD700);
+    border: 4px solid #000000;
+}
+
+.user-style-2 {
+    font-family: 'Nosifer', cursive;
+    font-size: 20px;
+    color: #8B0000;
+    text-shadow: 2px 2px 0px #FFFFFF, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #8B0000, #2F4F4F);
+    border: 4px solid #000000;
+}
+
+.user-style-3 {
+    font-family: 'Faster One', cursive;
+    font-size: 24px;
+    color: #FF69B4;
+    text-shadow: 2px 2px 0px #00FFFF, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF69B4, #00FFFF);
+    border: 4px solid #000000;
+}
+
+.user-style-4 {
+    font-family: 'Bungee', cursive;
+    font-size: 23px;
+    color: #00FF00;
+    text-shadow: 2px 2px 0px #FF00FF, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #00FF00, #FF00FF);
+    border: 4px solid #000000;
+}
+
+.user-style-5 {
+    font-family: 'Bangers', cursive;
+    font-size: 25px;
+    color: #1E90FF;
+    text-shadow: 2px 2px 0px #FFFF00, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #1E90FF, #FFFF00);
+    border: 4px solid #000000;
+}
+
+.user-style-6 {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #00FFFF;
+    text-shadow: 2px 2px 0px #FF0080, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #001122, #00FFFF);
+    border: 4px solid #00FFFF;
+}
+
+.user-style-7 {
+    font-family: 'Audiowide', cursive;
+    font-size: 23px;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 0px #FF4500, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #191970, #FF4500);
+    border: 4px solid #FFFFFF;
+}
+
+.user-style-8 {
+    font-family: 'Iceberg', cursive;
+    font-size: 24px;
+    color: #E0FFFF;
+    text-shadow: 2px 2px 0px #4169E1, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #B0E0E6, #4169E1);
+    border: 4px solid #E0FFFF;
+}
+
+/* Additional User Font Styles (user9-user30) */
+.user-style-9 {
+    font-family: 'Racing Sans One', cursive;
+    font-size: 24px;
+    color: #FF8C00;
+    text-shadow: 3px 3px 0px #000080, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #FF8C00, #000080);
+    border: 4px double #FF8C00;
+}
+
+.user-style-10 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 25px;
+    color: #32CD32;
+    text-shadow: 3px 3px 0px #8B0000, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #32CD32, #FFFF00);
+    border: 4px dashed #8B0000;
+}
+
+.user-style-11 {
+    font-family: 'Shrikhand', cursive;
+    font-size: 23px;
+    color: #9932CC;
+    text-shadow: 3px 3px 0px #00FF00, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #9932CC, #00FF00);
+    border: 4px double #000000;
+}
+
+.user-style-12 {
+    font-family: 'Butcherman', cursive;
+    font-size: 23px;
+    color: #800080;
+    text-shadow: 3px 3px 0px #FFFF00, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #800080, #FFFF00);
+    border: 5px ridge #800080;
+}
+
+.user-style-13 {
+    font-family: 'Creepster', cursive;
+    font-size: 26px;
+    color: #00F5FF;
+    text-shadow: 2px 2px 0px #FF1493, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #00F5FF, #FF1493);
+    border: 5px dotted #000000;
+}
+
+.user-style-14 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 26px;
+    color: #FF6347;
+    text-shadow: 2px 2px 0px #00FF7F, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF6347, #00FF7F);
+    border: 4px solid #000000;
+}
+
+.user-style-15 {
+    font-family: 'Schoolbell', cursive;
+    font-size: 25px;
+    color: #4169E1;
+    text-shadow: 2px 2px 0px #FFFF00, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #4169E1, #FFFF00);
+    border: 4px dashed #4169E1;
+}
+
+.user-style-16 {
+    font-family: 'Finger Paint', cursive;
+    font-size: 24px;
+    color: #FF1493;
+    text-shadow: 3px 3px 0px #00CED1, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #FF1493, #00CED1);
+    border: 4px dotted #FF1493;
+}
+
+.user-style-17 {
+    font-family: 'Stardos Stencil', cursive;
+    font-size: 25px;
+    color: #228B22;
+    text-shadow: 2px 2px 0px #FFD700, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #228B22, #FFD700);
+    border: 5px solid #228B22;
+}
+
+.user-style-18 {
+    font-family: 'Diplomata SC', cursive;
+    font-size: 22px;
+    color: #B8860B;
+    text-shadow: 3px 3px 0px #8B0000, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #B8860B, #8B0000);
+    border: 4px inset #B8860B;
+}
+
+.user-style-19 {
+    font-family: 'Black Ops One', cursive;
+    font-size: 22px;
+    color: #FFD700;
+    text-shadow: 3px 3px 0px #8B0000, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #8B0000, #FFD700);
+    border: 5px ridge #FFD700;
+}
+
+.user-style-20 {
+    font-family: 'Monoton', cursive;
+    font-size: 26px;
+    color: #FF1493;
+    text-shadow: 2px 2px 0px #00FF00, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF1493, #00FF00);
+    border: 4px groove #FF1493;
+}
+
+.user-style-21 {
+    font-family: 'Wallpoet', cursive;
+    font-size: 23px;
+    color: #9370DB;
+    text-shadow: 3px 3px 0px #FFD700, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #9370DB, #FFD700);
+    border: 4px inset #9370DB;
+}
+
+.user-style-22 {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: #00BFFF;
+    text-shadow: 2px 2px 0px #FF69B4, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #00BFFF, #FF69B4);
+    border: 4px solid #00BFFF;
+}
+
+.user-style-23 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 25px;
+    color: #FF6347;
+    text-shadow: 2px 2px 0px #40E0D0, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF6347, #40E0D0);
+    border: 4px double #FF6347;
+}
+
+.user-style-24 {
+    font-family: 'Comic Neue', cursive;
+    font-size: 26px;
+    font-weight: 700;
+    color: #FF00FF;
+    text-shadow: 3px 3px 0px #00FF00, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #FF00FF, #00FF00);
+    border: 4px solid #FF00FF;
+}
+
+.user-style-25 {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 23px;
+    font-weight: 900;
+    color: #FF8C00;
+    text-shadow: 2px 2px 0px #8A2BE2, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF8C00, #8A2BE2);
+    border: 5px ridge #FF8C00;
+}
+
+.user-style-26 {
+    font-family: 'Kalam', cursive;
+    font-size: 24px;
+    font-weight: 700;
+    color: #DC143C;
+    text-shadow: 3px 3px 0px #00FF7F, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #DC143C, #00FF7F);
+    border: 4px groove #DC143C;
+}
+
+.user-style-27 {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 25px;
+    color: #FF1493;
+    text-shadow: 2px 2px 0px #00FFFF, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF1493, #00FFFF);
+    border: 4px dashed #FF1493;
+}
+
+.user-style-28 {
+    font-family: 'Marker Felt', cursive;
+    font-size: 24px;
+    color: #32CD32;
+    text-shadow: 3px 3px 0px #FF4500, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #32CD32, #FF4500);
+    border: 4px dotted #32CD32;
+}
+
+.user-style-29 {
+    font-family: 'Alfa Slab One', cursive;
+    font-size: 24px;
+    color: #FF4500;
+    text-shadow: 2px 2px 0px #9400D3, 4px 4px 0px #000000;
+    background: linear-gradient(45deg, #FF4500, #9400D3);
+    border: 4px groove #FF4500;
+}
+
+.user-style-30 {
+    font-family: 'Griffy', cursive;
+    font-size: 23px;
+    color: #2E8B57;
+    text-shadow: 3px 3px 0px #FFD700, 5px 5px 0px #000000;
+    background: linear-gradient(45deg, #2E8B57, #FFD700);
+    border: 4px outset #2E8B57;
+}
+
+/* Random font button styling */
+.random-font-btn {
+    font-size: 18px;
+    padding: 8px 12px;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #FF6B35, #FFD700);
+    color: #000000;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    font-family: 'Bangers', cursive;
+}
+
+.random-font-btn:hover {
+    transform: rotate(360deg) scale(1.1);
+    box-shadow: 0 0 15px #FFD700;
+}
+
+/* Enhanced Scrollbar styling */
+.messages-area::-webkit-scrollbar {
+    width: 16px;
+}
+
+.messages-area::-webkit-scrollbar-track {
+    background: linear-gradient(45deg, #FFE66D, #FF6B35);
+    border-radius: 15px;
+    border: 3px solid #000000;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+}
+
+.messages-area::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FF1493, #00FFFF, #32CD32);
+    background-size: 400% 400%;
+    animation: gradientShift 3s ease infinite;
+    border-radius: 15px;
+    border: 3px solid #000000;
+    box-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.messages-area::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #FFD700, #FF6B35, #FF1493);
+    transform: scale(1.1);
+}
+
+/* Dark theme scrollbar */
+.messages-area.dark-theme::-webkit-scrollbar-track {
+    background: linear-gradient(45deg, #333333, #666666);
+    border: 3px solid #FFD700;
+}
+
+.messages-area.dark-theme::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FFD700, #FF6B35, #FF1493);
+    border: 3px solid #FFD700;
+}
+
+/* Scrollbar for sidebar */
+.chat-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FFD700, #FF6B35);
+    border-radius: 10px;
+    border: 1px solid #000000;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 3px solid #FFD700;
+    }
+    
+    .sidebar.hidden {
+        transform: translateY(-100%);
+    }
+    
+    .current-chat-name {
+        font-size: 1.2rem;
+    }
+    
+    .message-input-container {
+        flex-direction: column;
+    }
+    
+    #messageInput {
+        font-size: 16px;
+    }
+    
+    .controls-area {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+}

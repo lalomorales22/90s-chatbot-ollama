@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sup chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Creepster&family=Fredoka+One&family=Bangers&family=Shrikhand&family=Righteous&family=Faster+One&family=Nosifer&family=Orbitron:wght@400;700;900&family=Audiowide&family=Black+Ops+One&family=Monoton&family=Wallpoet&family=Iceberg&family=Racing+Sans+One&family=Butcherman&family=Luckiest+Guy&family=Schoolbell&family=Finger+Paint&family=Stardos+Stencil:wght@400;700&family=Diplomata+SC&family=Alfa+Slab+One&family=Griffy&family=Exo+2:wght@400;700;900&family=Russo+One&family=Comic+Neue:wght@400;700&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">💥 SUP CHAT 💥</h2>
+                <button id="newChatBtn" class="new-chat-btn">+ New Chat</button>
+            </div>
+            
+            <div class="chat-list" id="chatList">
+                <!-- Chat items will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main-content">
+            <header class="chat-header">
+                <h3 id="currentChatName" class="current-chat-name">Select or create a chat</h3>
+                <div class="header-controls">
+                    <button id="toggleSidebar" class="toggle-sidebar">☰</button>
+                </div>
+            </header>
+
+            <div class="chat-container">
+                <div id="messages" class="messages-area"></div>
+                
+                <div class="input-area">
+                    <div class="controls-area">
+                        <div class="user-font-selector">
+                            <label for="userFontSelect">Your Font:</label>
+                            <select id="userFontSelect">
+                                <!-- Original fonts -->
+                                <option value="user1">Hero Bold (Righteous)</option>
+                                <option value="user2">Villain Dark (Nosifer)</option>
+                                <option value="user3">Retro Pop (Faster One)</option>
+                                <option value="user4">Electric Neon (Bungee)</option>
+                                <option value="user5">Classic Comic (Bangers)</option>
+                                <option value="user6">Cyber Tech (Orbitron)</option>
+                                <option value="user7">Space Force (Audiowide)</option>
+                                <option value="user8">Ice Cold (Iceberg)</option>
+                                
+                                <!-- Action/Hero fonts -->
+                                <option value="user9">Racing Speed (Racing Sans One)</option>
+                                <option value="user10">Comic Classic (Fredoka One)</option>
+                                <option value="user11">Shout Power (Shrikhand)</option>
+                                
+                                <!-- Horror/Dark fonts -->
+                                <option value="user12">Butcher Horror (Butcherman)</option>
+                                <option value="user13">Creepy Crawl (Creepster)</option>
+                                
+                                <!-- Playful/Fun fonts -->
+                                <option value="user14">Lucky Strike (Luckiest Guy)</option>
+                                <option value="user15">School Days (Schoolbell)</option>
+                                <option value="user16">Finger Art (Finger Paint)</option>
+                                
+                                <!-- Military/Stencil fonts -->
+                                <option value="user17">Stencil Strike (Stardos Stencil)</option>
+                                <option value="user18">Diplomat Bold (Diplomata SC)</option>
+                                <option value="user19">Black Ops (Black Ops One)</option>
+                                
+                                <!-- Retro/Neon fonts -->
+                                <option value="user20">Neon Mono (Monoton)</option>
+                                <option value="user21">Wall Poet (Wallpoet)</option>
+                                
+                                <!-- Futuristic fonts -->
+                                <option value="user22">Exo Future (Exo 2)</option>
+                                <option value="user23">Russo Power (Russo One)</option>
+                                
+                                <!-- Comic specific fonts -->
+                                <option value="user24">Comic Modern (Comic Neue)</option>
+                                
+                                <!-- Wild/Crazy fonts -->
+                                <option value="user25">Jokerman Wild (System)</option>
+                                <option value="user26">Kalam Hand (Kalam)</option>
+                                
+                                <!-- Graffiti style -->
+                                <option value="user27">Street Marker (Permanent Marker)</option>
+                                <option value="user28">Marker Feel (System)</option>
+                                
+                                <!-- Decorative/Ornate fonts -->
+                                <option value="user29">Alfa Slab (Alfa Slab One)</option>
+                                <option value="user30">Griffy Gothic (Griffy)</option>
+                            </select>
+                            <button id="randomFontBtn" class="random-font-btn" title="Pick Random Font">🎲</button>
+                        </div>
+                        <div class="theme-selector">
+                            <label for="themeSelect">Chat Theme:</label>
+                            <select id="themeSelect">
+                                <option value="light">Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="message-input-container">
+                        <input type="text" id="messageInput" placeholder="Type your message here..." maxlength="500">
+                        <button id="sendButton">💥 SEND 💥</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
