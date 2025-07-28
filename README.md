@@ -1,5 +1,6 @@
 # 💥 SUP CHAT 💥
-![Uploading Screenshot 2025-07-28 at 12.39.31 PM.png…]()
+<img width="1056" height="809" alt="Screenshot 2025-07-28 at 12 39 57 PM" src="https://github.com/user-attachments/assets/86dede5b-efcf-44a8-9241-2de0f63e94e6" />
+
 
 A fun, colorful AI chatbot with AMAZING fonts! Chat with AI using the local Ollama gemma3:4b model and save all your conversations.
 
